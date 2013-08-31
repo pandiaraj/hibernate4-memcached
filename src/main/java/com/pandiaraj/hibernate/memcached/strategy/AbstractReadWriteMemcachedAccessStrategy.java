@@ -32,14 +32,12 @@ public class AbstractReadWriteMemcachedAccessStrategy<T extends MemcachedTransac
 	public boolean putFromLoad(Object key, Object value, long txnTimestamp, Object version, boolean minimumPutOverride) throws CacheException {
 		if(region.writeLock(key)) {
 			try {
-				if(region.contains(key)) {
-					Item item = (Item) region.get(key);
-					if(item == null || item.isWriteable(version, versionCompator)) {
-						region.put(key, new Item(version, txnTimestamp, value));
-						return true;
-					} else {
-						return false;
-					}
+				Item item = (Item) region.get(key);
+				if(item == null || item.isWriteable(version, versionCompator)) {
+					region.put(key, new Item(version, txnTimestamp, value));
+					return true;
+				} else {
+					return false;
 				}
 			} finally {
 				region.releaseLock(key);
