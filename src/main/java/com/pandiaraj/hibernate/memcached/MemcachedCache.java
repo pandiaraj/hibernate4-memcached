@@ -7,7 +7,7 @@ public interface MemcachedCache {
 	String getName();
 	boolean exists(Object key);
 	Object get(Object key) throws CacheException;
-	void put(Object key, Object value) throws CacheException;
+	void put(Object key, int expirationInSecs, Object value) throws CacheException;
 	void remove(Object key) throws CacheException;
 	void clear() throws CacheException;
 	long getSizeInMemory();

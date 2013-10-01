@@ -33,7 +33,7 @@ public class MemcachedTransactionalRegion extends MemcachedRegion implements Tra
 	}
 	
 	public void put(Object key, Object value) throws CacheException {
-		cache.put(key, value);
+		cache.put(key, cacheDurationInSecs, value);
 	}
 	
 	public void remove(Object key) throws CacheException {

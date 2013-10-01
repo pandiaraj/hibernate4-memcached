@@ -18,7 +18,7 @@ public class MemcachedTimestampsRegion extends MemcachedRegion implements Timest
 	}
 
 	public void put(Object key, Object value) throws CacheException {
-		cache.put(key, value);
+		cache.put(key, cacheDurationInSecs, value);
 	}
 
 	public void evict(Object key) throws CacheException {

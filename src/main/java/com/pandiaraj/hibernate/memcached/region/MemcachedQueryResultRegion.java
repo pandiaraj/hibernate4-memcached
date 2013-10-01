@@ -8,7 +8,7 @@ import org.hibernate.cache.spi.QueryResultsRegion;
 import com.pandiaraj.hibernate.memcached.MemcachedCache;
 
 public class MemcachedQueryResultRegion extends MemcachedRegion implements QueryResultsRegion {
-
+	
 	public MemcachedQueryResultRegion(MemcachedCache cache, Properties properties) {
 		super(cache, properties);
 	}
@@ -18,7 +18,7 @@ public class MemcachedQueryResultRegion extends MemcachedRegion implements Query
 	}
 
 	public void put(Object key, Object value) throws CacheException {
-		cache.put(key, value);
+		cache.put(key, cacheDurationInSecs, value);
 	}
 
 	public void evict(Object key) throws CacheException {

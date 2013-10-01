@@ -13,16 +13,21 @@ import com.pandiaraj.hibernate.memcached.MemcachedCache;
 public abstract class MemcachedRegion implements Region {
 	
 	private static final String CACHE_LOCK_TIMEOUT_PROPERTY = "hibernate.memcached.cache_lock_timeout";
+	private static final String CACHE_DURATION_PROPERTY = "hibernate.memcached.cache_duration_secs";
 	private static final int DEFAULT_CACHE_LOCK_TIMEOUT = 1000;
+	private static final int DEFAULT_CACHE_DURATION_SECS = 60;
 	
 	protected final MemcachedCache cache;
 	
 	private final int cacheLockTimeout;
+	protected final int cacheDurationInSecs;
 	
 	public MemcachedRegion(MemcachedCache cache, Properties properties) {
 		this.cache = cache;
 		String timeout = properties.getProperty(CACHE_LOCK_TIMEOUT_PROPERTY);
 		cacheLockTimeout = timeout == null ? DEFAULT_CACHE_LOCK_TIMEOUT : Integer.parseInt(timeout);
+		String cacheDuration = properties.getProperty(CACHE_DURATION_PROPERTY);
+		cacheDurationInSecs = cacheDuration == null ? DEFAULT_CACHE_DURATION_SECS : Integer.parseInt(cacheDuration);
 	}
 	
 	public String getName() {

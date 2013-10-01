@@ -33,8 +33,8 @@ public class MemcachedCacheImpl implements MemcachedCache {
 		return client.get(key.toString());
 	}
 
-	public void put(Object key, Object value) throws CacheException {
-		client.set(key.toString(), 60, value);
+	public void put(Object key, int expirationInSecs, Object value) throws CacheException {
+		client.set(key.toString(), expirationInSecs, value);
 	}
 
 	public void remove(Object key) throws CacheException {
@@ -68,7 +68,7 @@ public class MemcachedCacheImpl implements MemcachedCache {
 		String expiresStr = String.valueOf(expires);
 		
 		while(timeout >= 0) {
-			OperationFuture<Boolean> result = client.add(lockKey, 60, expiresStr);
+			OperationFuture<Boolean> result = client.add(lockKey, (int)durationMSecs/1000, expiresStr);
 			try {
 				Boolean success = result.get();
 				if(success) {
@@ -82,7 +82,7 @@ public class MemcachedCacheImpl implements MemcachedCache {
 			String currentValueStr = (String) get(lockKey);
 			if(currentValueStr != null && Long.parseLong(currentValueStr) < System.currentTimeMillis()) {
 				String oldValueStr = (String) get(lockKey);
-				put(lockKey, expiresStr);
+				put(lockKey, (int)durationMSecs/1000, expiresStr);
 				if(oldValueStr != null && oldValueStr.equals(currentValueStr)) {
 					locked = true;
 					return true;
